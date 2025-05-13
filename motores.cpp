@@ -7,6 +7,8 @@ class Turno {
 private:
     string name;
 
+
+//Prueba
 public:
     Turno() {
         name = " ";
