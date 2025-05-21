@@ -1,28 +1,46 @@
-from collections import deque
+class Node:
+    def __init__(self, data, next=None):
+        self.data = data
+        self.next = next
 
 class Queue:
     def __init__(self):
-        self._items = deque()
+        self.front = None
+        self.back = None
+        self.count = 0  # ✅ este sí lo usas para size()
+        self.contador = 0  # ✅ para asignar número incremental
 
-    def push(self, item):
-        self._items.append(item)
+    def push(self, value):
+        new_node = Node(value)
+        if self.back is None:
+            self.front = self.back = new_node
+        else:
+            self.back.next = new_node
+            self.back = new_node
+        self.count += 1
 
     def pop(self):
-        if self.is_empty():
-            return False, None
-        return True, self._items.popleft()
+        if self.front is None:
+            return None
+        value = self.front.data
+        self.front = self.front.next
+        if self.front is None:
+            self.back = None
+        self.count -= 1
+        return value
 
     def peek(self):
-        if self.is_empty():
-            return False, None
-        return True, self._items[0]
+        return self.front.data if self.front else None
 
     def is_empty(self):
-        return len(self._items) == 0
+        return self.front is None
 
-    def get_size(self):
-        return len(self._items)
+    def size(self):
+        return self.count
 
     def print(self):
-        for item in self._items:
-            print(item)
+        current = self.front
+        while current:
+            print(f"{current.data} -> ", end="")
+            current = current.next
+        print("None")
